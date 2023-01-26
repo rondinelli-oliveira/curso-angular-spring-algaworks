@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -32,5 +33,10 @@ public class CategoryResource {
         response.setHeader("Location", uri.toASCIIString());
 
         return ResponseEntity.created(uri).body(categorySave);
+    }
+
+    @GetMapping("/categories/{id}")
+    public Optional<Category> findById(@PathVariable Long id) {
+        return categoryRepository.findById(id);
     }
 }
