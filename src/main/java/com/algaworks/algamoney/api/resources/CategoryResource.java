@@ -4,6 +4,7 @@ import com.algaworks.algamoney.api.models.Category;
 import com.algaworks.algamoney.api.repositories.CategoryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -36,7 +37,8 @@ public class CategoryResource {
     }
 
     @GetMapping("/categories/{id}")
-    public Optional<Category> findById(@PathVariable Long id) {
-        return categoryRepository.findById(id);
+    public ResponseEntity<Category> findById(@PathVariable Long id) {
+        Optional<Category> category = categoryRepository.findById(id);
+        return category.isPresent() ? ResponseEntity.ok(category.get()) : ResponseEntity.notFound().build();
     }
 }
