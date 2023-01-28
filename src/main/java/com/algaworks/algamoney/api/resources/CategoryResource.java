@@ -3,6 +3,7 @@ package com.algaworks.algamoney.api.resources;
 import com.algaworks.algamoney.api.models.Category;
 import com.algaworks.algamoney.api.repositories.CategoryRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class CategoryResource {
     }
 
     @PostMapping("/categories")
-    public ResponseEntity<Category> save(@RequestBody Category category, HttpServletResponse response) {
+    public ResponseEntity<Category> save(@Valid @RequestBody Category category, HttpServletResponse response) {
         Category categorySave = categoryRepository.save(category);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
