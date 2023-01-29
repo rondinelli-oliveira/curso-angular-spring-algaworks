@@ -1,10 +1,13 @@
 package com.algaworks.algamoney.api.resources;
 
+import com.algaworks.algamoney.api.event.ResouceCreatedEvent;
 import com.algaworks.algamoney.api.models.Category;
 import com.algaworks.algamoney.api.repositories.CategoryRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,6 +23,9 @@ public class CategoryResource {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
     @GetMapping("/categories")
     public List<Category> findAll() {
         return categoryRepository.findAll();
@@ -28,12 +34,8 @@ public class CategoryResource {
     @PostMapping("/categories")
     public ResponseEntity<Category> save(@Valid @RequestBody Category category, HttpServletResponse response) {
         Category categorySave = categoryRepository.save(category);
-
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(categorySave.getId()).toUri();
-        response.setHeader("Location", uri.toASCIIString());
-
-        return ResponseEntity.created(uri).body(categorySave);
+        publisher.publishEvent(new ResouceCreatedEvent(this, response, categorySave.getId()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(categorySave);
     }
 
     @GetMapping("/categories/{id}")
