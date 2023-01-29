@@ -41,4 +41,10 @@ public class PersonResource {
         Optional<Person> person = personRepository.findById(id);
         return person.isPresent() ? ResponseEntity.ok(person.get()) : ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("/people/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        personRepository.deleteById(id);
+    }
 }
