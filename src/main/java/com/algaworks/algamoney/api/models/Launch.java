@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table
-public class launch {
+public class Launch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -108,7 +108,7 @@ public class launch {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        launch launch = (launch) o;
+        Launch launch = (Launch) o;
         return Objects.equals(id, launch.id);
     }
 
