@@ -2,6 +2,7 @@ package com.algaworks.algamoney.api.models;
 
 import com.algaworks.algamoney.api.models.enums.TypeLaunch;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -13,21 +14,31 @@ public class Launch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
     private String description;
 
+    @NotNull
     @Column(name = "due_date")
     private LocalDate dueDate;
+
     private LocalDate payday;
+
+    @NotNull
     private Double value;
+
     private String note;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private TypeLaunch type;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_category")
     private Category category;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_person")
     private Person person;
