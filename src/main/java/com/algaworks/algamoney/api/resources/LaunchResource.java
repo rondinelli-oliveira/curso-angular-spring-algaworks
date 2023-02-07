@@ -37,7 +37,6 @@ public class LaunchResource {
     private MessageSource messageSource;
 
     @GetMapping("/launchies")
-
     public List<Launch> findAll() {
         return launchRepository.findAll();
     }
@@ -55,11 +54,17 @@ public class LaunchResource {
         return ResponseEntity.status(HttpStatus.CREATED).body(launchSave);
     }
 
-    @ExceptionHandler({ NonExistentPersonOrInactiveException.class })
+    @ExceptionHandler({NonExistentPersonOrInactiveException.class})
     public ResponseEntity<Object> handleNonExistentPersonOrInactiveException(NonExistentPersonOrInactiveException ex) {
         String userMessage = messageSource.getMessage("person.non-existent-or-inactive", null, LocaleContextHolder.getLocale());
         String developmentMessage = ex.toString();
         List<AlgamoneyExceptionHandler.Error> errorList = Arrays.asList(new AlgamoneyExceptionHandler.Error(userMessage, developmentMessage));
         return ResponseEntity.badRequest().body(errorList);
+    }
+
+    @DeleteMapping("/launchies/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        launchRepository.deleteById(id);
     }
 }
