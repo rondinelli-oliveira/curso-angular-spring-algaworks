@@ -1,5 +1,6 @@
 package com.algaworks.algamoney.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -52,6 +53,12 @@ public class Person {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    @JsonIgnore
+    @Transient
+    public boolean isInactive() {
+        return !this.status.equals(true);
     }
 
     @Override

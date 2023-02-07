@@ -1,6 +1,5 @@
 package com.algaworks.algamoney.api.models;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable

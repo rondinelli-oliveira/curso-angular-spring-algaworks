@@ -6,7 +6,6 @@ import com.algaworks.algamoney.api.repositories.PersonRepository;
 import com.algaworks.algamoney.api.services.PersonService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
