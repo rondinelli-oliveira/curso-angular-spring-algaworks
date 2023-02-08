@@ -4,6 +4,7 @@ import com.algaworks.algamoney.api.event.ResouceCreatedEvent;
 import com.algaworks.algamoney.api.exceptionhandler.AlgamoneyExceptionHandler;
 import com.algaworks.algamoney.api.models.Launch;
 import com.algaworks.algamoney.api.repositories.LaunchRepository;
+import com.algaworks.algamoney.api.repositories.filters.LaunchFilter;
 import com.algaworks.algamoney.api.services.LaunchService;
 import com.algaworks.algamoney.api.services.exceptions.NonExistentPersonOrInactiveException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,8 +38,8 @@ public class LaunchResource {
     private MessageSource messageSource;
 
     @GetMapping("/launchies")
-    public List<Launch> findAll() {
-        return launchRepository.findAll();
+    public List<Launch> search(LaunchFilter launchFilter) {
+        return launchRepository.filter(launchFilter);
     }
 
     @GetMapping("/launchies/{id}")
