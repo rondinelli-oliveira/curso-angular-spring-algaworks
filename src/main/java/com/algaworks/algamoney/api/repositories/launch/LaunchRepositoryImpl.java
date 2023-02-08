@@ -10,6 +10,9 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ public class LaunchRepositoryImpl implements LaunchRepositoryQuery {
     private EntityManager manager;
 
     @Override
-    public List<Launch> filter(LaunchFilter launchFilter) {
+    public Page<Launch> filter(LaunchFilter launchFilter, Pageable pageable) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Launch> criteriaQuery = builder.createQuery(Launch.class);
         Root<Launch> root = criteriaQuery.from(Launch.class);
@@ -30,7 +33,9 @@ public class LaunchRepositoryImpl implements LaunchRepositoryQuery {
         criteriaQuery.where(predicates);
 
         TypedQuery<Launch> query = manager.createQuery(criteriaQuery);
-        return query.getResultList();
+        addPaginationRestrictions(query, pageable);
+
+        return new PageImpl<>(query.getResultList(), pageable, total(launchFilter));
     }
 
     private Predicate[] createRestrictions(LaunchFilter launchFilter, CriteriaBuilder builder,
@@ -55,5 +60,26 @@ public class LaunchRepositoryImpl implements LaunchRepositoryQuery {
         }
 
         return predicates.toArray(new Predicate[predicates.size()]);
+    }
+
+    private void addPaginationRestrictions(TypedQuery<Launch> query, Pageable pageable) {
+        int actualPage = pageable.getPageNumber();
+        int totalRecordsPerPage = pageable.getPageSize();
+        int firstRecordPage = actualPage * totalRecordsPerPage;
+
+        query.setFirstResult(firstRecordPage);
+        query.setMaxResults(totalRecordsPerPage);
+    }
+
+    private Long total(LaunchFilter launchFilter) {
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
+        Root<Launch> root = criteriaQuery.from(Launch.class);
+
+        Predicate[] predicates = createRestrictions(launchFilter, builder, root);
+        criteriaQuery.where(predicates);
+
+        criteriaQuery.select(builder.count(root));
+        return manager.createQuery(criteriaQuery).getSingleResult();
     }
 }
