@@ -1,6 +1,8 @@
 package com.algaworks.algamoney.api.models;
 
-import jakarta.persistence.Embeddable;
+//import jakarta.persistence.Embeddable;
+
+import javax.persistence.Embeddable;
 
 @Embeddable
 public class Adress {

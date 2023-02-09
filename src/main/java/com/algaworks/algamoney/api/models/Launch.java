@@ -1,8 +1,10 @@
 package com.algaworks.algamoney.api.models;
 
 import com.algaworks.algamoney.api.models.enums.TypeLaunch;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+//import jakarta.persistence.*;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+//import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.Objects;

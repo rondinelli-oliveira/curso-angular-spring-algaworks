@@ -3,18 +3,25 @@ package com.algaworks.algamoney.api.repositories.launch;
 import com.algaworks.algamoney.api.models.Launch;
 import com.algaworks.algamoney.api.models.Launch_;
 import com.algaworks.algamoney.api.repositories.filters.LaunchFilter;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+//import jakarta.persistence.EntityManager;
+//import jakarta.persistence.PersistenceContext;
+//import jakarta.persistence.TypedQuery;
+//import jakarta.persistence.criteria.CriteriaBuilder;
+//import jakarta.persistence.criteria.CriteriaQuery;
+//import jakarta.persistence.criteria.Predicate;
+//import jakarta.persistence.criteria.Root;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.ObjectUtils;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +52,9 @@ public class LaunchRepositoryImpl implements LaunchRepositoryQuery {
         if (!ObjectUtils.isEmpty(launchFilter.getDescription())) {
             predicates.add(builder.like(
                     builder.lower(root.get(Launch_.description)), "%" + launchFilter.getDescription().toLowerCase() + "%"));
-        } else {
+        }/* else {
             predicates.add(builder.like(builder.lower(root.get(Launch_.description)), "%"));
-        }
+        }*/
 
         if (launchFilter.getExpirationDateOf() != null) {
             predicates.add(
