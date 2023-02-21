@@ -5,6 +5,7 @@ import com.algaworks.algamoney.api.exceptionhandler.AlgamoneyExceptionHandler;
 import com.algaworks.algamoney.api.models.Launch;
 import com.algaworks.algamoney.api.repositories.LaunchRepository;
 import com.algaworks.algamoney.api.repositories.filters.LaunchFilter;
+import com.algaworks.algamoney.api.repositories.projection.LaunchSummary;
 import com.algaworks.algamoney.api.services.LaunchService;
 import com.algaworks.algamoney.api.services.exceptions.NonExistentPersonOrInactiveException;
 //import jakarta.servlet.http.HttpServletResponse;
@@ -46,6 +47,12 @@ public class LaunchResource {
     @PreAuthorize("hasAuthority('ROLE_FIND_LAUNCH') and hasAuthority('SCOPE_read')")
     public Page<Launch> search(LaunchFilter launchFilter, Pageable pageable) {
         return launchRepository.filter(launchFilter, pageable);
+    }
+
+    @GetMapping(value = "/launchies", params = "summary")
+    @PreAuthorize("hasAuthority('ROLE_FIND_LAUNCH') and hasAuthority('SCOPE_read')")
+    public Page<LaunchSummary> summary(LaunchFilter launchFilter, Pageable pageable) {
+        return launchRepository.summary(launchFilter, pageable);
     }
 
     @GetMapping("/launchies/{id}")
