@@ -1,5 +1,7 @@
 package com.algaworks.algamoney.api.resources;
 
+import com.algaworks.algamoney.api.config.property.AlgamoneyApiProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,11 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("api/v1")
 public class TokenResource {
 
+    @Autowired
+    private AlgamoneyApiProperty algamoneyApiProperty;
+
     @DeleteMapping("/token/revoke")
     public void revoke(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         Cookie cookie = new Cookie("refreshToken", null);
         cookie.setHttpOnly(true);
-        cookie.setSecure(false); // TODO: change for true at production
+        cookie.setSecure(algamoneyApiProperty.getSecurity().isEnableHttps());
         cookie.setPath(servletRequest.getContextPath() + "/oauth/token");
         cookie.setMaxAge(0);
 
