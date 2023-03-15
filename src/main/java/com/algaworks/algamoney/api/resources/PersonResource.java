@@ -3,11 +3,14 @@ package com.algaworks.algamoney.api.resources;
 import com.algaworks.algamoney.api.event.ResouceCreatedEvent;
 import com.algaworks.algamoney.api.models.Person;
 import com.algaworks.algamoney.api.repositories.PersonRepository;
+import com.algaworks.algamoney.api.repositories.filters.PersonFilter;
 import com.algaworks.algamoney.api.services.PersonService;
 //import jakarta.servlet.http.HttpServletResponse;
 //import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -70,5 +73,11 @@ public class PersonResource {
     @PreAuthorize("hasAuthority('ROLE_INSERT_PERSON') and hasAuthority('SCOPE_write')")
     public void updatePropertyStatus(@PathVariable Long id, @RequestBody Boolean status) {
         personService.updatePropertyStatus(id, status);
+    }
+
+    @GetMapping(value = "/people", params = "pageble")
+    @PreAuthorize("hasAuthority('ROLE_FIND_PERSON') and hasAuthority('SCOPE_read')")
+    public Page<Person> search(PersonFilter personFilter, Pageable pageable) {
+        return personRepository.filter(personFilter, pageable);
     }
 }
